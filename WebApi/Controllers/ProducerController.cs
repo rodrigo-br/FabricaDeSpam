@@ -1,5 +1,6 @@
 ﻿using Confluent.Kafka;
 using Microsoft.AspNetCore.Mvc;
+using Polly;
 
 namespace WebApi.Controllers
 {
@@ -8,26 +9,41 @@ namespace WebApi.Controllers
     public class ProducerController : ControllerBase
     {
         private readonly string directory;
-        private readonly IProducer<string, byte[]> kafkaProducer;
+        private IProducer<string, byte[]>? kafkaProducer;
 
         public ProducerController()
         {
-            // Configurar a pasta de destino
             directory = Path.Combine(Directory.GetCurrentDirectory(), "files");
+            double timeSpan = 5;
 
-            // Configurar o produtor Kafka (substitua pelos detalhes do seu ambiente)
-            var config = new ProducerConfig
+            var retryPolicy = Policy
+            .Handle<Exception>() // Ajuste isso para o tipo de exceção que você deseja tratar.
+            .WaitAndRetryForever(
+                retryAttempt => TimeSpan.FromSeconds(timeSpan), // Intervalo entre as tentativas.
+                (exception, timeSpan, context) =>
+                {
+                    Console.WriteLine($"Erro ao se conectar ao Kafka. Tentando novamente em {timeSpan} segundos.");
+                });
+
+            retryPolicy.Execute(() =>
             {
-                BootstrapServers = "kafka:29092",
-                MessageMaxBytes = 5000000
-            };
-            kafkaProducer = new ProducerBuilder<string, byte[]>(config).Build();
+                var config = new ProducerConfig
+                {
+                    BootstrapServers = "kafka:29092",
+                    MessageMaxBytes = 5000000
+                };
+                kafkaProducer = new ProducerBuilder<string, byte[]>(config).Build();
+            });
         }
 
         [HttpPost]
         [Route("cat")]
         public async Task<IActionResult> UploadFile(IFormFile file)
         {
+            if (kafkaProducer == null)
+            {
+                throw new Exception("Conexão com o kafka não estabelecida, contacte o administrador para mais informações");
+            }
             if (file != null && file.Length > 0)
             {
                 string randomName = SetRandomName(file.FileName);

@@ -10,6 +10,7 @@
   </PropertyGroup>
   <ItemGroup>
     <None Include="config\server.properties" />
+    <None Include="config\wait-for-it.sh" />
     <None Include="docker-compose.override.yml">
       <DependentUpon>docker-compose.yml</DependentUpon>
     </None>

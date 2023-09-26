@@ -35,6 +35,8 @@ services:
         KAFKA_MESSAGE_MAX_BYTES: 10000000
     volumes:
       - ./config/server.properties:/etc/kafka/server.properties
+      - ./config/wait-for-it.sh:/wait-for-it.sh
+    command: ["/wait-for-it.sh", "zookeeper:2181", "--", "/etc/confluent/docker/run"]
 
   consumer:
     image: ${DOCKER_REGISTRY-}consumer
