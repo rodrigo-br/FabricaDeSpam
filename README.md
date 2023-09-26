@@ -16,9 +16,13 @@ dotnet dev-certs https -ep ${HOME}/.aspnet/https/aspnetapp.pfx
 
 - Confiar no certificado
 
-```dotnet dev-certs https --trust```
+```PS
+dotnet dev-certs https --trust
+```
 
 - Rodar containers pelo docker-compose
 
-```docker-compose up --build```
+```PS
+docker-compose up --build
+```
 
