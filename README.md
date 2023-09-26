@@ -9,7 +9,6 @@
 
 - Baixar certificado
 
-PowerShell
 ```PS
 dotnet dev-certs https -ep ${HOME}/.aspnet/https/aspnetapp.pfx
 ```
