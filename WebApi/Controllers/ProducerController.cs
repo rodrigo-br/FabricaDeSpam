@@ -8,7 +8,7 @@ namespace WebApi.Controllers
     public class ProducerController : ControllerBase
     {
         private readonly string directory;
-        private readonly IProducer<Null, string> kafkaProducer;
+        private readonly IProducer<string, byte[]> kafkaProducer;
 
         public ProducerController()
         {
@@ -18,9 +18,10 @@ namespace WebApi.Controllers
             // Configurar o produtor Kafka (substitua pelos detalhes do seu ambiente)
             var config = new ProducerConfig
             {
-                BootstrapServers = "kafka:29092"
+                BootstrapServers = "kafka:29092",
+                MessageMaxBytes = 5000000
             };
-            kafkaProducer = new ProducerBuilder<Null, string>(config).Build();
+            kafkaProducer = new ProducerBuilder<string, byte[]>(config).Build();
         }
 
         [HttpPost]
@@ -37,10 +38,16 @@ namespace WebApi.Controllers
                     await file.CopyToAsync(stream);
                 }
 
-                // Enviar o nome da imagem para o Kafka (ou o conteúdo da imagem, se preferir)
-                kafkaProducer.Produce("cat", new Message<Null, string>
+                byte[] fileData;
+                using (var memoryStream = new MemoryStream())
                 {
-                    Value = randomName // Pode ser o nome ou o conteúdo da imagem, dependendo das suas necessidades
+                    await file.CopyToAsync(memoryStream);
+                    fileData = memoryStream.ToArray();
+                }
+                kafkaProducer.Produce("cat", new Message<string, byte[]>
+                {
+                    Key = randomName, 
+                    Value = fileData
                 });
 
                 return Ok(new { mensagem = "Imagem salva com sucesso!" });
