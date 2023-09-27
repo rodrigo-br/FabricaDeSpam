@@ -6,8 +6,17 @@ services:
     build:
       context: .
       dockerfile: WebApi/Dockerfile
+      args:
+        - HTTPS_CERTIFICATE_PASSWORD
     networks:
       - net_pets
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=https://+:443;http://+:80
+      - ASPNETCORE_Kestrel__Certificates__Default__Password=${HTTPS_CERTIFICATE_PASSWORD}
+      - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/aspnetapp.pfx
+    volumes:
+      - ~/.aspnet/https:/https:ro
 
   zookeeper:
     image: confluentinc/cp-zookeeper:latest

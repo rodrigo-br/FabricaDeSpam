@@ -54,6 +54,7 @@
                             catch (ConsumeException e)
                             {
                                 Console.WriteLine($"Error: {e.Error.Reason}");
+                                throw new Exception();
                             }
                         }
                     }
