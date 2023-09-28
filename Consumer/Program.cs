@@ -24,7 +24,7 @@
             {
                 var config = new ConsumerConfig
                 {
-                    BootstrapServers = "kafka:29092",
+                    BootstrapServers = "kafka:9092",
                     GroupId = "qualquer coisa",
                     AutoOffsetReset = AutoOffsetReset.Earliest,
                     MessageMaxBytes = 5000000
@@ -67,6 +67,7 @@
                     consumer.Close();
                 }
             });
+            Console.WriteLine("SAIU!!!");
         }
     }
 }

@@ -29,7 +29,7 @@ namespace WebApi.Controllers
             {
                 var config = new ProducerConfig
                 {
-                    BootstrapServers = "kafka:29092",
+                    BootstrapServers = "kafka:9092",
                     MessageMaxBytes = 5000000
                 };
                 kafkaProducer = new ProducerBuilder<string, byte[]>(config).Build();
