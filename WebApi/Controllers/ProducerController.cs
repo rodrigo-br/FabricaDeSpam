@@ -44,6 +44,10 @@ namespace WebApi.Controllers
             {
                 throw new Exception("Conexão com o kafka não estabelecida, contacte o administrador para mais informações");
             }
+            if (file.Length > 5000000)
+            {
+                return BadRequest("Tamanho do arquivo maior que 5 MB");
+            }
             if (file != null && file.Length > 0)
             {
                 string randomName = SetRandomName(file.FileName);

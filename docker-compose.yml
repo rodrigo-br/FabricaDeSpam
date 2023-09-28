@@ -7,6 +7,7 @@ services:
       - "9092:9092"
     volumes:
       - "kafka_data:/bitnami"
+      - ./config/server.properties:/etc/kafka/server.properties
     environment:
       # KRaft settings
       - KAFKA_CFG_NODE_ID=0
@@ -18,6 +19,7 @@ services:
       - KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP=CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT
       - KAFKA_CFG_CONTROLLER_LISTENER_NAMES=CONTROLLER
       - KAFKA_CFG_INTER_BROKER_LISTENER_NAME=PLAINTEXT
+      - KAFKA_MESSAGE_MAX_BYTES=500000000
     networks:
       - cavalinho
 
@@ -40,7 +42,6 @@ services:
       sh -c "dotnet run"
     networks:
       - cavalinho
-
      
 volumes:
   kafka_data:
