@@ -14,6 +14,8 @@ PowerShell
 dotnet dev-certs https -ep %USERPROFILE%\.aspnet\https\aspnetapp.pfx -p <YOUR .ENV CERTIFICATE_PASSWORD>
 ```
 
+**ESSA SENHA DEVERÁ SER ADICIONADA NO ARQUIVO .ENV NA RAIZ DO PROJETO EX:** `.envexample`
+
 - Confiar no certificado
 
 ```PS
@@ -26,8 +28,17 @@ dotnet dev-certs https --trust
 docker-compose up --build
 ```
 
-- Os arquivos serão gerados dentro do container do docker na pasta files, tanto do consumer quanto do producer.  
-  Para acessá-los pegue o ID do container que deseja acessar.
+## Acesso ao Swagger
+
+Por padrão, a aplicação irá rodar na porta 5052.  
+Para abrir o swagger basta acessar o `localhost:5052/swagger`
+
+**PS: USAR SOMENTE REQUISIÇÕES HTTP.**
+
+## Como acessar os arquivos
+
+Os arquivos serão gerados dentro do container do docker na pasta files, tanto do consumer quanto do producer.  
+ Para acessá-los pegue o ID do container que deseja acessar.
 
 ```PS
 docker ps
