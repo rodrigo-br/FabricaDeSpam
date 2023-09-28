@@ -21,4 +21,8 @@
     <Folder Include="files\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Producer\Producer.csproj" />
+  </ItemGroup>
+
 </Project>

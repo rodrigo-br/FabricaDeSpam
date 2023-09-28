@@ -13,4 +13,4 @@ FROM mcr.microsoft.com/dotnet/runtime:7.0
 WORKDIR /app
 RUN mkdir /app/files
 COPY --from=build /app .
-ENTRYPOINT [ "dotnet", "Consumer.dll" ]
+ENTRYPOINT [ "dotnet", "Producer.dll" ]

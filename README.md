@@ -2,26 +2,6 @@
 
 ## Como usar
 
-### Windows
-
-- Instalar o [dotnet-sdk](https://dotnet.microsoft.com/pt-br/download)
-
-- Baixar certificado
-
-PowerShell
-
-```PS
-dotnet dev-certs https -ep %USERPROFILE%\.aspnet\https\aspnetapp.pfx -p <YOUR .ENV CERTIFICATE_PASSWORD>
-```
-
-**ESSA SENHA DEVERÁ SER ADICIONADA NO ARQUIVO .ENV NA RAIZ DO PROJETO EX:** `.envexample`
-
-- Confiar no certificado
-
-```PS
-dotnet dev-certs https --trust
-```
-
 - Rodar containers pelo docker-compose
 
 ```PS
@@ -30,8 +10,8 @@ docker-compose up --build
 
 ## Acesso ao Swagger
 
-Por padrão, a aplicação irá rodar na porta 5052.  
-Para abrir o swagger basta acessar o `localhost:5052/swagger`
+Por padrão, a aplicação irá rodar na porta 5002.  
+Para abrir o swagger basta acessar o `http://localhost:5002/swagger`
 
 **PS: USAR SOMENTE REQUISIÇÕES HTTP.**
 

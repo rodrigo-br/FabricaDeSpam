@@ -1,6 +1,8 @@
 ﻿using Confluent.Kafka;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Server.HttpSys;
 using Polly;
+using Producer.Interface;
 
 namespace WebApi.Controllers
 {
@@ -9,41 +11,18 @@ namespace WebApi.Controllers
     public class ProducerController : ControllerBase
     {
         private readonly string directory;
-        private IProducer<string, byte[]>? kafkaProducer;
+        private readonly IKafkaProducerService _kafkaProducer;
 
-        public ProducerController()
+        public ProducerController(IKafkaProducerService kafkaProducer)
         {
+            _kafkaProducer = kafkaProducer;
             directory = Path.Combine(Directory.GetCurrentDirectory(), "files");
-            double timeSpan = 5;
-
-            var retryPolicy = Policy
-            .Handle<Exception>() // Ajuste isso para o tipo de exceção que você deseja tratar.
-            .WaitAndRetryForever(
-                retryAttempt => TimeSpan.FromSeconds(timeSpan), // Intervalo entre as tentativas.
-                (exception, timeSpan, context) =>
-                {
-                    Console.WriteLine($"Erro ao se conectar ao Kafka. Tentando novamente em {timeSpan} segundos.");
-                });
-
-            retryPolicy.Execute(() =>
-            {
-                var config = new ProducerConfig
-                {
-                    BootstrapServers = "kafka:9092",
-                    MessageMaxBytes = 5000000
-                };
-                kafkaProducer = new ProducerBuilder<string, byte[]>(config).Build();
-            });
         }
 
         [HttpPost]
         [Route("cat")]
         public async Task<IActionResult> UploadFile(IFormFile file)
         {
-            if (kafkaProducer == null)
-            {
-                throw new Exception("Conexão com o kafka não estabelecida, contacte o administrador para mais informações");
-            }
             if (file.Length > 5000000)
             {
                 throw new BadHttpRequestException("Tamanho do arquivo maior que 5MB", 413);
@@ -64,18 +43,21 @@ namespace WebApi.Controllers
                     await file.CopyToAsync(memoryStream);
                     fileData = memoryStream.ToArray();
                 }
-                kafkaProducer.Produce("cat", new Message<string, byte[]>
+                bool success = await _kafkaProducer.ProduceMessageAsync("cat", randomName, fileData);
+                if (success)
                 {
-                    Key = randomName,
-                    Value = fileData
-                });
+                    return Ok(new { mensagem = "Imagem salva com sucesso!" });
+                }
+                else
+                {
+                    throw new Exception("Ocorreu algum erro no envio da mensagem");
+                }
 
-                return Ok(new { mensagem = "Imagem salva com sucesso!" });
             }
             return BadRequest("Nenhuma imagem enviada.");
         }
 
-        private string SetRandomName(string originalName)
+        private static string SetRandomName(string originalName)
         {
             string baseName = Path.GetFileNameWithoutExtension(Path.GetRandomFileName());
             string extension = Path.GetExtension(originalName);

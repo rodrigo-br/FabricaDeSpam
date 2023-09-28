@@ -1,5 +1,8 @@
 namespace WebApi
 {
+    using Producer.Interface;
+    using Producer.Service;
+
     public class Program
     {
         public static void Main(string[] args)
@@ -7,15 +10,14 @@ namespace WebApi
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
+            builder.Services.AddScoped<IKafkaProducerService, KafkaProducerService>();
 
             builder.Services.AddControllers();
-            // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
             var app = builder.Build();
 
-            // Configure the HTTP request pipeline.
             //if (app.Environment.IsDevelopment())
             //{
             app.UseSwagger();
