@@ -28,22 +28,22 @@ services:
       - kafka
       - producer
     build:
-      context: ./WebApi
-      dockerfile: Dockerfile
+      context: ./
+      dockerfile: WebApi.Dockerfile
     ports:
       - 5002:80
 
   consumer:
     build:
-      context: ./Consumer
-      dockerfile: Dockerfile
+      context: ./
+      dockerfile: Consumer.Dockerfile
     networks:
       - cavalinho
      
   producer:
     build:
-      context: ./Producer
-      dockerfile: Dockerfile
+      context: ./
+      dockerfile: Producer.Dockerfile
     networks:
       - cavalinho
 
