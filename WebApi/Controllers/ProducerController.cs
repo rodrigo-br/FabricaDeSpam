@@ -46,7 +46,7 @@ namespace WebApi.Controllers
             }
             if (file.Length > 5000000)
             {
-                return BadRequest("Tamanho do arquivo maior que 5 MB");
+                throw new BadHttpRequestException("Tamanho do arquivo maior que 5MB", 413);
             }
             if (file != null && file.Length > 0)
             {
