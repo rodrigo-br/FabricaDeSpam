@@ -14,6 +14,8 @@ PowerShell
 dotnet dev-certs https -ep %USERPROFILE%\.aspnet\https\aspnetapp.pfx -p <YOUR .ENV CERTIFICATE_PASSWORD>
 ```
 
+**ESSA SENHA DEVERÁ SER ADICIONADA NO ARQUIVO .ENV NA RAIZ DO PROJETO EX:** `.envexample`
+
 - Confiar no certificado
 
 ```PS
