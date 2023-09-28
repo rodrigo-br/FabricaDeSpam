@@ -29,7 +29,7 @@ namespace WebApi.Controllers
             {
                 var config = new ProducerConfig
                 {
-                    BootstrapServers = "kafka:29092",
+                    BootstrapServers = "kafka:9092",
                     MessageMaxBytes = 5000000
                 };
                 kafkaProducer = new ProducerBuilder<string, byte[]>(config).Build();
@@ -43,6 +43,10 @@ namespace WebApi.Controllers
             if (kafkaProducer == null)
             {
                 throw new Exception("Conexão com o kafka não estabelecida, contacte o administrador para mais informações");
+            }
+            if (file.Length > 5000000)
+            {
+                return BadRequest("Tamanho do arquivo maior que 5 MB");
             }
             if (file != null && file.Length > 0)
             {
@@ -62,7 +66,7 @@ namespace WebApi.Controllers
                 }
                 kafkaProducer.Produce("cat", new Message<string, byte[]>
                 {
-                    Key = randomName, 
+                    Key = randomName,
                     Value = fileData
                 });
 
