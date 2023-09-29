@@ -20,6 +20,7 @@ services:
       - KAFKA_MESSAGE_MAX_BYTES=500000000
     networks:
       - cavalinho
+    restart: always
 
   webapi:
     networks:
@@ -32,6 +33,7 @@ services:
       dockerfile: WebApi.Dockerfile
     ports:
       - 5002:80
+    restart: always
 
   consumer:
     build:
@@ -39,6 +41,7 @@ services:
       dockerfile: Consumer.Dockerfile
     networks:
       - cavalinho
+    restart: always
      
   producer:
     build:
@@ -46,6 +49,23 @@ services:
       dockerfile: Producer.Dockerfile
     networks:
       - cavalinho
+    restart: always
+
+  postgresdb:
+    image: postgres
+    env_file:
+      - ../.env
+    volumes:
+      - ./dbdata:/var/lib/postgresql/data
+      - type: bind
+        source: ./config/dump.sql
+        target: /docker-entrypoint-initdb.d/dump.sql
+
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8080:8080
 
 volumes:
   kafka_data:

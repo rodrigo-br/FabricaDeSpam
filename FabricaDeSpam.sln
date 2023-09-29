@@ -13,6 +13,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Producer", "src\Producer\Pr
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{EC0B4313-E4E3-42E5-AD87-88C26A1FF41D}"
 	ProjectSection(SolutionItems) = preProject
+		.env = .env
 		src\.envexample = src\.envexample
 		src\.gitignore = src\.gitignore
 		src\Consumer.Dockerfile = src\Consumer.Dockerfile
@@ -25,7 +26,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{2E669CA3-2B4
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{32E9F228-77A4-4E77-AA55-187DAB77A85A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests", "tests\Tests\Tests.csproj", "{CCFD56D6-CA1E-4453-AC40-639343AED767}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tests", "tests\Tests\Tests.csproj", "{CCFD56D6-CA1E-4453-AC40-639343AED767}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -19,9 +19,9 @@ namespace Tests
         /// <summary>
         /// Padrão de nome : Given_When_Then
         /// Exemplo :
-        /// Given - Dado o construtor
-        /// When - Quando não tem Kafka
-        /// Then - Não deve lançar exceção
+        /// Given - Dado o UploadFile
+        /// When - Quando é um arquivo válido
+        /// Then - Retorna OK
         /// </summary>
         [Fact]
         public async void UploadFile_WithValidFile_ReturnsOkResult()
