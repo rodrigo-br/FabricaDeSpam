@@ -5,6 +5,7 @@
 - Rodar containers pelo docker-compose
 
 ```PS
+cd src
 docker-compose up --build
 ```
 
