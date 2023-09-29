@@ -7,7 +7,7 @@
     public class KafkaProducerService : IKafkaProducerService
     {
         private readonly IProducer<string, byte[]> _kafkaProducer;
-
+#nullable disable
         public KafkaProducerService()
         {
             IProducer<string, byte[]> kafkaProducer = null;
@@ -32,7 +32,7 @@
             });
             _kafkaProducer = kafkaProducer;
         }
-
+#nullable enable
         public async Task<bool> ProduceMessageAsync(string topic, string key, byte[] value)
         {
             try
