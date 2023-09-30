@@ -1,13 +1,18 @@
 namespace WebApi
 {
+    using Infrastructure.ApplicationContext;
+    using Microsoft.EntityFrameworkCore;
     using Producer.Interface;
     using Producer.Service;
+    using DotNetEnv;
 
     public class Program
     {
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
+
+            Env.Load();
 
             // Add services to the container.
             builder.Services.AddScoped<IKafkaProducerService, KafkaProducerService>();
@@ -27,11 +32,8 @@ namespace WebApi
             // app.UseHttpsRedirection();
 
             app.UseAuthorization();
-
             app.MapControllers();
-
             app.Run();
-
         }
     }
 }

@@ -6,6 +6,7 @@ FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
 WORKDIR /src
 COPY WebApi/WebApi.csproj WebApi/
 COPY Producer/Producer.csproj Producer/
+COPY Infrastructure/Infrastructure.csproj Infrastructure/
 RUN dotnet restore WebApi/WebApi.csproj
 COPY . .
 WORKDIR /src/WebApi

@@ -25,6 +25,8 @@ services:
   webapi:
     networks:
       - cavalinho
+    env_file:
+      - ../.env
     depends_on:
       - kafka
       - producer
@@ -60,6 +62,10 @@ services:
       - type: bind
         source: ./config/dump.sql
         target: /docker-entrypoint-initdb.d/dump.sql
+    networks:
+      - cavalinho
+    ports:
+      - 5432:5432
 
   adminer:
     image: adminer

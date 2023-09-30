@@ -1,22 +1,36 @@
-﻿using Confluent.Kafka;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Server.HttpSys;
-using Polly;
-using Producer.Interface;
-
-namespace WebApi.Controllers
+﻿namespace WebApi.Controllers
 {
+    using Infrastructure.ApplicationContext;
+    using Microsoft.AspNetCore.Mvc;
+    using Microsoft.EntityFrameworkCore;
+    using Producer.Interface;
+
     [Route("api/[controller]")]
     [ApiController]
     public class ProducerController : ControllerBase
     {
         private readonly string directory;
         private readonly IKafkaProducerService _kafkaProducer;
+        private readonly ApplicationDbContext _dbContext;
 
-        public ProducerController(IKafkaProducerService kafkaProducer)
+        public ProducerController(IKafkaProducerService kafkaProducer, ApplicationDbContext dbContext)
         {
             _kafkaProducer = kafkaProducer;
+            _dbContext = dbContext;
             directory = Path.Combine(Directory.GetCurrentDirectory(), "files");
+        }
+
+        [HttpGet]
+        [Route("test")]
+        public async Task<string?> TestConnection()
+        {
+            var test = await _dbContext.Images.ToListAsync();
+
+            if (test != null)
+            {
+                return test.ToString();
+            }
+            return "fail";
         }
 
         [HttpPost]
