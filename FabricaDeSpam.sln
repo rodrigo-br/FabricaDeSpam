@@ -20,6 +20,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		src\Producer.Dockerfile = src\Producer.Dockerfile
 		README.md = README.md
 		src\WebApi.Dockerfile = src\WebApi.Dockerfile
+		src\WebApp.Dockerfile = src\WebApp.Dockerfile
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{2E669CA3-2B48-4B25-8620-E2C805C3DE47}"
@@ -32,7 +33,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Domain", "src\Domain\Domain
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Infrastructure", "src\Infrastructure\Infrastructure.csproj", "{EE50C12E-6760-4801-BA6F-B62D6549CFF2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApp", "src\WebApp\WebApp.csproj", "{7CB31785-F38C-45E8-8B14-E97DFFB720D8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebApp", "src\WebApp\WebApp.csproj", "{7CB31785-F38C-45E8-8B14-E97DFFB720D8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -84,6 +85,7 @@ Global
 		{CCFD56D6-CA1E-4453-AC40-639343AED767} = {32E9F228-77A4-4E77-AA55-187DAB77A85A}
 		{689ECA36-0064-4B8B-BE68-AF22ED221C8F} = {2E669CA3-2B48-4B25-8620-E2C805C3DE47}
 		{EE50C12E-6760-4801-BA6F-B62D6549CFF2} = {2E669CA3-2B48-4B25-8620-E2C805C3DE47}
+		{7CB31785-F38C-45E8-8B14-E97DFFB720D8} = {2E669CA3-2B48-4B25-8620-E2C805C3DE47}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {054D9FD5-32B0-4F32-9C9C-B6B49C0A5421}
