@@ -1,7 +1,7 @@
-﻿using Domain.Entities;
-
-namespace Infrastructure.Repositories
+﻿namespace Infrastructure.Repositories
 {
+    using Domain.Entities;
+
     public interface IImageRepository
     {
         Task<IEnumerable<Image>> GetAll();

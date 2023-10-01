@@ -53,6 +53,17 @@ services:
       - cavalinho
     restart: always
 
+  webapp:
+     build:
+       context: ./
+       dockerfile: WebApp.Dockerfile
+     networks:
+       - cavalinho
+     restart: always
+     ports:
+       - 80:80
+       - 443:443
+
   postgresdb:
     image: postgres
     env_file:
@@ -68,6 +79,7 @@ services:
       - 5432:5432
     expose:
       - "5432"
+    restart: always
 
   adminer:
     image: adminer

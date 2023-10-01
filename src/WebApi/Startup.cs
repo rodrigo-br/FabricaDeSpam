@@ -2,18 +2,14 @@
 {
     using Infrastructure.ApplicationContext;
     using Microsoft.Extensions.DependencyInjection;
-    using Microsoft.EntityFrameworkCore;
     using Producer.Interface;
     using Producer.Service;
-    using DotNetEnv;
     using Microsoft.AspNetCore.Identity;
     using Domain.Entities;
     using Microsoft.AspNetCore.Builder;
-    using Microsoft.AspNetCore.Cors.Infrastructure;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.Hosting;
-    using Microsoft.OpenApi.Models;
     using Scrutor;
     using Infrastructure.Repositories;
 

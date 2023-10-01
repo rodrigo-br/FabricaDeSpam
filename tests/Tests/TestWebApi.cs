@@ -6,17 +6,9 @@ namespace Tests
     using Moq;
     using Producer.Interface;
     using WebApi.Controllers;
-    using Xunit.Abstractions;
 
     public class TestWebApi
     {
-        private readonly ITestOutputHelper _output;
-
-        public TestWebApi(ITestOutputHelper output)
-        {
-            _output = output;
-        }
-
         /// <summary>
         /// Padrão de nome : Given_When_Then
         /// Exemplo :
