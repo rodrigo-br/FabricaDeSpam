@@ -12,6 +12,8 @@
     using Microsoft.Extensions.Hosting;
     using Scrutor;
     using Infrastructure.Repositories;
+    using System.Text.Json.Serialization;
+    using Infrastructure.Profiles;
 
     public class Startup
     {
@@ -24,11 +26,23 @@
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers();
+            services.AddControllers()
+                .AddJsonOptions(opt =>
+                {
+                    opt.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
+                });
             services.AddDbContext<ApplicationDbContext>();
             services.AddIdentity<User, IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
+
+            services.Scan(scan =>
+                scan.FromApplicationDependencies()
+                .AddClasses(x => x.InNamespaces(new string[] { "Infrastructure", "Domain", "Producer" }))
+                .UsingRegistrationStrategy(RegistrationStrategy.Skip)
+                .AsSelfWithInterfaces()
+                .WithScopedLifetime());
+            services.AddAutoMapper(typeof(Startup), typeof(ImageProfile));
 
             services.AddScoped<IKafkaProducerService, KafkaProducerService>();
             services.AddScoped<IImageRepository, ImageRepository>();
@@ -39,12 +53,6 @@
                     AllowAnyHeader())
             );
 
-            services.Scan(scan =>
-                scan.FromApplicationDependencies()
-                .AddClasses(x => x.InNamespaces(new string[] { "Infrastructure", "Domain", "Producer" }))
-                .UsingRegistrationStrategy(RegistrationStrategy.Skip)
-                .AsSelfWithInterfaces()
-                .WithScopedLifetime());
 
             services.AddEndpointsApiExplorer();
             services.AddSwaggerGen();

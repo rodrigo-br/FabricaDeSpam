@@ -1,7 +1,7 @@
 ﻿namespace WebApi.Controllers
 {
+    using Domain.DTO;
     using Domain.Entities;
-    using Infrastructure.ApplicationContext;
     using Infrastructure.Repositories;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.EntityFrameworkCore;
@@ -23,10 +23,16 @@
             directory = Path.Combine(Directory.GetCurrentDirectory(), "files");
         }
 
+        //[HttpGet]
+        //public async Task<IEnumerable<ImageDTO>> GetAll()
+        //{
+        //    return await _imageRepository.GetAll();
+        //}
+
         [HttpGet]
-        public async Task<IEnumerable<Image>> GetAll()
+        public async Task<ImageDTO?> GetById(Guid id)
         {
-            return await _imageRepository.GetAll();
+            return await _imageRepository.GetById(id);
         }
 
         [HttpPost]

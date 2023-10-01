@@ -30,7 +30,9 @@
         {
             Env.Load();
             base.OnConfiguring(optionsBuilder);
-            optionsBuilder.UseNpgsql($"Server=postgresdb;" +
+
+            optionsBuilder
+                .UseNpgsql($"Server=postgresdb;" +
                 $"Port=5432;" +
                 $"Database={Env.GetString("POSTGRES_DB")};" +
                 $"User Id={Env.GetString("POSTGRES_USER")};" +

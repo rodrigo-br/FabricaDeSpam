@@ -1,5 +1,7 @@
 ﻿namespace Infrastructure.Repositories
 {
+    using AutoMapper;
+    using Domain.DTO;
     using Domain.Entities;
     using Infrastructure.ApplicationContext;
     using Microsoft.EntityFrameworkCore;
@@ -7,29 +9,37 @@
     public class ImageRepository : IImageRepository
     {
         private readonly ApplicationDbContext _applicationDbContext;
+        private readonly IMapper _mapper;
 
-        public ImageRepository(ApplicationDbContext applicationDbContext)
+        public ImageRepository(ApplicationDbContext applicationDbContext, IMapper mapper)
         {
             _applicationDbContext = applicationDbContext;
+            _mapper = mapper;
         }
 
-        public async Task<Image> Add(Image image)
+        public async Task<Image> Add(ImageDTO image)
         {
-            await _applicationDbContext.AddAsync(image);
+            Image imageDomainModel = _mapper.Map<Image>(image);
+            imageDomainModel.Id = Guid.NewGuid();
+            imageDomainModel.User = _applicationDbContext.Users.FirstOrDefault(user => user.Id == imageDomainModel.UserId);
+            await _applicationDbContext.AddAsync(imageDomainModel);
             await _applicationDbContext.SaveChangesAsync();
-            return image;
+            return imageDomainModel;
         }
 
-        public async Task<IEnumerable<Image>> GetAll()
+        public async Task<IEnumerable<ImageDTO>> GetAll()
         {
-            return await _applicationDbContext.Images.ToListAsync();
+            var images = await _applicationDbContext.Images.ToListAsync();
+            return _mapper.Map<List<ImageDTO>>(images);
         }
 
-        public async Task<Image?> GetById(Guid id)
+        public async Task<ImageDTO?> GetById(Guid id)
         {
-            return await _applicationDbContext.Images
-                .Include(x => x.User)
-                .FirstOrDefaultAsync(i => i.Id == id);
+            var image = await _applicationDbContext.Images
+                .Include(i => i.User)
+                .SingleOrDefaultAsync(i => i.Id == id);
+
+            return _mapper.Map<ImageDTO>(image);
         }
 
         public async Task<Image?> Remove(Guid id)
@@ -52,15 +62,13 @@
             await _applicationDbContext.SaveChangesAsync();
         }
 
-        public async Task<Image?> Update(Image image)
+        public async Task<Image?> Update(ImageDTO image)
         {
-            var existingImage = await _applicationDbContext.Images
-                .Include(x => x.User)
-                .FirstOrDefaultAsync(i => i.Id == image.Id);
+            var existingImage = await _applicationDbContext.Images.FirstOrDefaultAsync(i => i.UserId == image.UserId && i.FileName == image.FileName);
 
             if (existingImage != null)
             {
-                _applicationDbContext.Entry(image).State = EntityState.Modified;
+                _applicationDbContext.Entry(existingImage).State = EntityState.Modified;
                 await _applicationDbContext.SaveChangesAsync();
 
                 return existingImage;
