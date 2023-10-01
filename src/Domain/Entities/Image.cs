@@ -1,6 +1,7 @@
 ﻿namespace Domain.Entities
 {
     using System.ComponentModel.DataAnnotations;
+    using System.ComponentModel.DataAnnotations.Schema;
 
     public class Image
     {
@@ -9,8 +10,9 @@
         [Required]
         public Guid Id { get; set; }
 
+        [ForeignKey("UserId")]
         [Required]
-        public Guid UserId { get; set; }
+        public string UserId { get; set; }
 
         [Required]
         public byte[] ImageData { get; set; }

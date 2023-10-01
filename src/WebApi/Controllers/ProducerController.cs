@@ -1,6 +1,8 @@
 ﻿namespace WebApi.Controllers
 {
+    using Domain.Entities;
     using Infrastructure.ApplicationContext;
+    using Infrastructure.Repositories;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.EntityFrameworkCore;
     using Producer.Interface;
@@ -11,12 +13,20 @@
     {
         private readonly string directory;
         private readonly IKafkaProducerService _kafkaProducer;
+        private readonly IImageRepository _imageRepository;
         private readonly string[] allowedExtensions = { ".jpg", ".jpeg", ".png", ".gif" };
 
-        public ProducerController(IKafkaProducerService kafkaProducer)
+        public ProducerController(IKafkaProducerService kafkaProducer, IImageRepository imageRepository)
         {
             _kafkaProducer = kafkaProducer;
+            _imageRepository = imageRepository;
             directory = Path.Combine(Directory.GetCurrentDirectory(), "files");
+        }
+
+        [HttpGet]
+        public async Task<IEnumerable<Image>> GetAll()
+        {
+            return await _imageRepository.GetAll();
         }
 
         [HttpPost]

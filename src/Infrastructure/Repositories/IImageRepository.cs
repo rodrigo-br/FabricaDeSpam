@@ -2,7 +2,7 @@
 
 namespace Infrastructure.Repositories
 {
-    internal interface IImageRepository
+    public interface IImageRepository
     {
         Task<IEnumerable<Image>> GetAll();
         Task<Image> Add(Image image);
