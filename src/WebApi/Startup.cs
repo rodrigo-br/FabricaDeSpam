@@ -14,8 +14,9 @@
     using Infrastructure.Repositories;
     using System.Text.Json.Serialization;
     using Infrastructure.Profiles;
+	using WebApi.Services;
 
-    public class Startup
+	public class Startup
     {
         public IConfiguration Configuration { get; }
 
@@ -46,6 +47,7 @@
 
             services.AddScoped<IKafkaProducerService, KafkaProducerService>();
             services.AddScoped<IImageRepository, ImageRepository>();
+            services.AddScoped<IUserService, UserService>();
 
             services.AddCors(options =>
                 options.AddPolicy("NaoSeiOQueColocarAquiAinda", builder =>

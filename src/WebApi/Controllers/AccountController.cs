@@ -1,37 +1,29 @@
 ﻿namespace WebApi.Controllers
 {
 	using Domain.DTO;
-	using Domain.Entities;
-	using Microsoft.AspNetCore.Identity;
 	using Microsoft.AspNetCore.Mvc;
+	using WebApi.Services;
 
 	[Route("api/[controller]")]
 	[ApiController]
 	public class AccountController : ControllerBase
 	{
-		private readonly UserManager<User> _userManager;
+		private readonly IUserService _userService;
 
-		public AccountController(UserManager<User> userManager)
+		public AccountController(IUserService userService)
         {
-			_userManager = userManager;
+			_userService = userService;
 		}
 
-		[HttpPost]
+        [HttpPost]
 		[Route("Register")]
 		public async Task<IActionResult> Register([FromBody] RegisterDTO registerDTO)
 		{
-			Console.WriteLine($"{registerDTO.Username}, {registerDTO.Email}, {registerDTO.Password}");
-			var identityUser = new User
-			{
-				UserName = registerDTO.Username,
-				Email = registerDTO.Email,
-			};
+			bool succeed = await _userService.RegisterUser(registerDTO);
 
-			var identityResult = await _userManager.CreateAsync(identityUser, registerDTO.Password);
-
-			if (identityResult.Succeeded)
+			if (succeed)
 			{
-				return Ok(identityResult);
+				return Ok();
 			}
 			return BadRequest();
 		}

@@ -2,7 +2,6 @@
 {
 	using Microsoft.AspNetCore.Mvc;
 	using Newtonsoft.Json;
-	using System.Net.Mime;
 	using System.Text;
 	using WebApp.Models;
 
@@ -23,9 +22,13 @@
             {
                 var content = new StringContent(jsonRegisterViewModel, Encoding.UTF8, "application/json");
                 HttpResponseMessage response = await httpClient.PostAsync("http://webapi:80/api/Account/Register", content);
-            }
 
-            return Ok("cavalinho");
+                if (response.IsSuccessStatusCode)
+                {
+					return Ok("cavalinho");
+				}
+            }
+            return BadRequest();
         }
     }
 }
