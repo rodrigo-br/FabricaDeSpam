@@ -235,6 +235,9 @@ COPY public."AspNetUserTokens" ("UserId", "LoginProvider", "Name", "Value") FROM
 --
 
 COPY public."AspNetUsers" ("Id", "UserName", "NormalizedUserName", "Email", "NormalizedEmail", "EmailConfirmed", "PasswordHash", "SecurityStamp", "ConcurrencyStamp", "PhoneNumber", "PhoneNumberConfirmed", "TwoFactorEnabled", "LockoutEnd", "LockoutEnabled", "AccessFailedCount") FROM stdin;
+1	usuario1	USUARIO1	usuario1@email.com	USUARIO1@EMAIL.COM	t	HASH_DA_SENHA	SECURITY_STAMP	CONCURRENCY_STAMP	1234567890	t	f	\N	t	0
+7092ec6f-6a02-467c-9076-7e2d58056cd0	cavalinho	CAVALINHO	cavalinho@gmail.com	CAVALINHO@GMAIL.COM	f	AQAAAAIAAYagAAAAEOYZmvDfGt1Bru8PrueqnDdS6Eh2aHFa45+dP65Zq/Uwt2xB47x1PZQP74aZSEChdw==	AS46OBC2ZI5SLU2V36MXKW24LNTFJIQV	d2f5a24b-f6c9-4c8b-93d4-b14c3170b78c	\N	f	f	\N	t	0
+254140d8-3b04-45d5-aa2b-e9e80ec90d6a	ralves-b	RALVES-B	rodrigoab123@gmail.com	RODRIGOAB123@GMAIL.COM	f	AQAAAAIAAYagAAAAELCiSezl0wointHMjwf8c/sitcd0pPiQzPBBJMb0fEvT/68uo2I6nNhMFLyNHcoh1Q==	4QYYKYELPRDVX2YNAPXXD4CN3S2QA7DE	4de489a3-8f64-4c57-b301-d7b645c59716	\N	f	f	\N	t	0
 \.
 
 
@@ -243,6 +246,7 @@ COPY public."AspNetUsers" ("Id", "UserName", "NormalizedUserName", "Email", "Nor
 --
 
 COPY public."Images" ("Id", "UserId", "ImageData", "FileName", "MimeType") FROM stdin;
+bdd2cb40-dd6b-4cbe-8ca7-196066078a6b	1	\\x89504e470d0a1a0a0000000d4948445200000258000002580806000000ea6067a4	sample.png	image/png
 \.
 
 
