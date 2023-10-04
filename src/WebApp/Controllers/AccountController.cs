@@ -1,11 +1,9 @@
 ﻿namespace WebApp.Controllers
 {
-	using Microsoft.AspNetCore.Connections.Features;
 	using Microsoft.AspNetCore.Mvc;
 	using Newtonsoft.Json;
 	using System.Text;
 	using WebApp.Models;
-	using static System.Net.WebRequestMethods;
 
 	public class AccountController : Controller
 	{
@@ -14,8 +12,13 @@
 		public AccountController()
         {
             baseUrl = "http://webapi:80/api/Account/";
-
 		}
+
+        [HttpGet]
+        public IActionResult Index()
+        {
+            return View();
+        }
 
         [HttpGet]
         public IActionResult Register()
@@ -35,7 +38,7 @@
 
                 if (response.IsSuccessStatusCode)
                 {
-					return Ok("cavalinho");
+					return Ok("Account created");
 				}
             }
             return BadRequest();

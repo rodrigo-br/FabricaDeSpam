@@ -2,30 +2,17 @@
 
 ## Como usar
 
-- Rodar containers pelo docker-compose
-
+- Clonar o repositório
+```PS
+https://github.com/rodrigo-br/FabricaDeSpam.git
+```
+- Criar um arquivo .env na raiz do projeto e preencher variáveis de acordo com o .envexample
+- Garantir que nenhuma das portas a seguir estarão ocupadas: 80, 443, 8080, 5002, 5432 e 9092
+- Rodar containers pelo docker-compose utilizando os comandos abaixo
 ```PS
 cd src
 docker-compose up --build
 ```
+- Acessar http://localhost:80
 
-## Acesso ao Swagger
 
-Por padrão, a aplicação irá rodar na porta 5002.  
-Para abrir o swagger basta acessar o `http://localhost:5002/swagger`
-
-**PS: USAR SOMENTE REQUISIÇÕES HTTP.**
-
-## Como acessar os arquivos
-
-Os arquivos serão gerados dentro do container do docker na pasta files, tanto do consumer quanto do producer.  
- Para acessá-los pegue o ID do container que deseja acessar.
-
-```PS
-docker ps
-```
-
-```PS
-docker exec -it CONTAINER_ID bash
-cd files
-```
