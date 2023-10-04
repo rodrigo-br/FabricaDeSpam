@@ -27,5 +27,22 @@
 			}
 			return BadRequest();
 		}
-    }
+
+		[HttpPost]
+		[Route("Login")]
+		public async Task<IActionResult> Login([FromBody] LoginDTO loginDTO)
+		{
+			if (ModelState.IsValid)
+			{
+				bool succeed = await _userService.LoginUser(loginDTO);
+
+				if (succeed)
+				{
+					return Ok();
+				}
+
+			}
+			return BadRequest();
+		}
+	}
 }
