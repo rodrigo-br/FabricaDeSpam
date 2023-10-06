@@ -34,11 +34,11 @@
 		{
 			if (ModelState.IsValid)
 			{
-				bool succeed = await _userService.LoginUser(loginDTO);
+				string token = await _userService.LoginUser(loginDTO);
 
-				if (succeed)
+				if (token != null)
 				{
-					return Ok();
+					return Ok(token);
 				}
 
 			}

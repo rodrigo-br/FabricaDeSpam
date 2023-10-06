@@ -6,6 +6,6 @@
 	public interface IUserService
 	{
 		Task<bool> RegisterUser(RegisterDTO registerDTO);
-		Task<bool> LoginUser(LoginDTO loginDTO);
+		Task<string?> LoginUser(LoginDTO loginDTO);
 	}
 }

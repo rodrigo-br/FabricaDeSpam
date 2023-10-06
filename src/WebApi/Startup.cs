@@ -34,6 +34,7 @@
                 });
             services.AddDbContext<ApplicationDbContext>();
             services.AddAppIdentity();
+            services.AddAppAuthentication();
 
             services.Scan(scan =>
                 scan.FromApplicationDependencies()

@@ -2,19 +2,22 @@
 {
 	using Domain.DTO;
 	using Domain.Entities;
-	using Microsoft.AspNetCore.Identity;
+    using Infrastructure.Services;
+    using Microsoft.AspNetCore.Identity;
 	using Microsoft.AspNetCore.Mvc;
 
 	public class UserService : IUserService
 	{
 		private readonly UserManager<User> _userManager;
 		private readonly SignInManager<User> _signInManager;
+        private readonly TokenService _tokenService;
 
-        public UserService(UserManager<User> userManager, SignInManager<User> signInManager)
+        public UserService(UserManager<User> userManager, SignInManager<User> signInManager, TokenService tokenService)
         {
 			_userManager = userManager;
 			_signInManager = signInManager;
-		}
+            _tokenService = tokenService;
+        }
 
         public async Task<bool> RegisterUser(RegisterDTO registerDTO)
 		{
@@ -29,11 +32,24 @@
 			return identityResult.Succeeded;
 		}
 
-		public async Task<bool> LoginUser(LoginDTO loginDTO)
+		public async Task<string?> LoginUser(LoginDTO loginDTO)
 		{
 			var signInResult = await _signInManager.PasswordSignInAsync(loginDTO.Username, loginDTO.Password, false, false);
 
-			return signInResult != null && signInResult.Succeeded;
+			if (signInResult != null && signInResult.Succeeded)
+			{
+				var user = _signInManager
+					.UserManager
+					.Users
+					.FirstOrDefault(u => u.NormalizedUserName == loginDTO.Username.ToUpper());
+
+				if (user != null)
+				{
+					return _tokenService.GenerateToken(user);
+				}
+			}
+
+			return null;
 		}
 	}
 }

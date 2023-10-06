@@ -66,6 +66,9 @@
 
 				if (response.IsSuccessStatusCode)
 				{
+                    string token = await response.Content.ReadAsStringAsync();
+                    HttpContext.Session.SetString("AuthToken", token);
+                    Console.WriteLine(token);
                     if (!string.IsNullOrWhiteSpace(loginViewModel.ReturnUrl))
                     {
                         return Redirect(loginViewModel.ReturnUrl);
