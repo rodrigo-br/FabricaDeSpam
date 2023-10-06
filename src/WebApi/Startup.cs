@@ -4,7 +4,6 @@
     using Microsoft.Extensions.DependencyInjection;
     using Producer.Interface;
     using Producer.Service;
-    using Microsoft.AspNetCore.Identity;
     using Domain.Entities;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
@@ -15,6 +14,7 @@
     using System.Text.Json.Serialization;
     using Infrastructure.Profiles;
 	using WebApi.Services;
+	using Infrastructure.Security;
 
 	public class Startup
     {
@@ -33,13 +33,11 @@
                     opt.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
                 });
             services.AddDbContext<ApplicationDbContext>();
-            services.AddIdentity<User, IdentityRole>()
-                .AddEntityFrameworkStores<ApplicationDbContext>()
-                .AddDefaultTokenProviders();
+            services.AddAppIdentity();
 
             services.Scan(scan =>
                 scan.FromApplicationDependencies()
-                .AddClasses(x => x.InNamespaces(new string[] { "Infrastructure", "Domain", "Producer" }))
+                .AddClasses(x => x.InNamespaces(new string[] { "Infrastructure", "Producer" }))
                 .UsingRegistrationStrategy(RegistrationStrategy.Skip)
                 .AsSelfWithInterfaces()
                 .WithScopedLifetime());
