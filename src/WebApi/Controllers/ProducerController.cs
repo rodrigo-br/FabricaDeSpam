@@ -1,7 +1,6 @@
 ﻿namespace WebApi.Controllers
 {
     using Domain.DTO;
-    using Domain.Entities;
     using Infrastructure.Repositories;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.EntityFrameworkCore;

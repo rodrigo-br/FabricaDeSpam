@@ -1,3 +1,66 @@
 ﻿@{
     ViewData["Title"] = "Sender";
 }
+
+<div class="container mx-auto">
+	<div class="row justify-content-center">
+		<div class="col-12 col-lg-6">
+			<h1 class="mt-3 mb-3 h3">
+				Send Image
+			</h1>
+			<form method="post" enctype="multipart/form-data">
+				<div class="mb-3">
+					<label class="form-label">Browse Image</label>
+					<input type="file" id="browse_image" class="form-control" name="file" />
+				</div>
+
+				<div class="mb-3">
+                    <label class="form-label">Topics</label>
+                    <div>
+                        <label class="form-check-label">
+                            <input type="checkbox" class="form-check-input catCheckbox" name="topics" value="cat mobile"> Cat Mobile
+                        </label>
+                    </div>
+                    <div class="mb-2">
+                        <label class="form-check-label">
+                            <input type="checkbox" class="form-check-input catCheckbox" name="topics" value="cat email"> Cat Email
+                        </label>
+                    </div>
+                    <div>
+                        <label class="form-check-label">
+                            <input type="checkbox" class="form-check-input dogCheckbox" name="topics" value="dog mobile"> Dog Mobile
+                        </label>
+                    </div>
+                    <div>
+                        <label class="form-check-label">
+                            <input type="checkbox" class="form-check-input dogCheckbox" name="topics" value="dog email"> Dog Email
+                        </label>
+                    </div>
+				</div>
+
+				<div class="mb-3">
+					<button type="submit" class="btn btn-dark">Register</button>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        $(".catCheckbox").on("change", function () {
+            if ($(this).prop("checked")) {
+                // Se um "cat" for selecionado, desmarcar todas as caixas "dog"
+                $(".dogCheckbox").prop("checked", false);
+            }
+        });
+
+        $(".dogCheckbox").on("change", function () {
+            if ($(this).prop("checked")) {
+                // Se um "dog" for selecionado, desmarcar todas as caixas "cat"
+                $(".catCheckbox").prop("checked", false);
+            }
+        });
+    });
+</script>
+
