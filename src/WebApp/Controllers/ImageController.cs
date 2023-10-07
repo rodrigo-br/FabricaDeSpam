@@ -6,25 +6,22 @@ namespace WebApp.Controllers
     {
         private byte[] image;
 
-        [HttpPost]
-        public IActionResult Index([FromBody]byte[] imageData)
+        [HttpGet]
+        public IActionResult Index()
         {
-            if (imageData != null && imageData.Length > 0)
-            {
-                image = imageData;
-                return Ok("Imagem recebida com sucesso.");
-            }
-            return NotFound("Dados da imagem ausentes ou inválidos.");
+            return View();
         }
 
         [HttpGet]
-        public IActionResult ExibirImage()
+        public IActionResult Sender()
         {
-            if (image != null && image.Length > 0)
-            {
-                return View("ExibirImage", image);
-            }
-            return NotFound("Nenhuma imagem em memória");
+            return View();
         }
-    }
+
+		[HttpGet]
+		public IActionResult Receiver()
+		{
+            return View();
+		}
+	}
 }

@@ -1,5 +1,20 @@
 ﻿@{
-    ViewData["Title"] = "Exibir Imagem";
+    ViewData["Title"] = "Images";
 }
 
-<h1>Exibição de Imagem</h1>
+<div class="container mx-auto">
+	<div class="row justify-content-center">
+		<div class="col-12 col-lg-6">
+			<h1 class="mt-3 mb-3 h3">
+				Images
+			</h1>
+
+			<div class="mb-3">
+				<a class="btn btn-dark" asp-area="" asp-controller="Image" asp-action="Sender">Send Images</a>
+			</div>
+			<div class="mb-3">
+				<a class="btn btn-dark" asp-area="" asp-controller="Image" asp-action="Receiver">Receive Images</a>
+			</div>
+		</div>
+	</div>
+</div>
