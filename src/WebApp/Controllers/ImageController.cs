@@ -40,8 +40,6 @@
                 return StatusCode(415, "Tipo de mídia não suportado. Apenas imagens com as seguintes extensões são permitidas: " + string.Join(", ", allowedExtensions));
             }
 
-            string randomName = SetRandomName(file.FileName);
-
             byte[] fileData;
             using (var memoryStream = new MemoryStream())
             {

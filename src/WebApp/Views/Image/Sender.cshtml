@@ -11,7 +11,7 @@
 			<form method="post" enctype="multipart/form-data">
 				<div class="mb-3">
 					<label class="form-label">Browse Image</label>
-					<input type="file" id="browse_image" class="form-control" name="file" />
+                    <input type="file" id="browse_image" class="form-control" name="file" required accept=".jpg, .jpeg, .png, .gif" />
 				</div>
 
 				<div class="mb-3">
@@ -59,6 +59,18 @@
             if ($(this).prop("checked")) {
                 // Se um "dog" for selecionado, desmarcar todas as caixas "cat"
                 $(".catCheckbox").prop("checked", false);
+            }
+        });
+    });
+
+    $(document).ready(function () {
+        $("form").submit(function (event) {
+            var catChecked = $("input.catCheckbox:checked").length > 0;
+            var dogChecked = $("input.dogCheckbox:checked").length > 0;
+
+            if (!catChecked && !dogChecked) {
+                alert("Select at least one topic option (Cat ou Dog)");
+                event.preventDefault(); // Impede o envio do formulário
             }
         });
     });
