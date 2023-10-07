@@ -4,7 +4,6 @@
     using Microsoft.Extensions.DependencyInjection;
     using Producer.Interface;
     using Producer.Service;
-    using Domain.Entities;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.Extensions.Configuration;
