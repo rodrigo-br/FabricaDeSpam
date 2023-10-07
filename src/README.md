@@ -2,15 +2,15 @@
 
 Os projetos construídos nessa solução são:
 
-- [Consumers](#consumers)
-- [Producer](#producer)
-- [Domain](#domain)
-- [Infrastructure](#infrastructure)
-- [WebApi](#webapi)
-- [WebApp](#webapp)
-- [DockerCompose](#dockercompose)
+* [Producer](#producer)
+* [Consumers](#consumers)
+* [Domain](#domain)
+* [Infrastructure](#infrastructure)
+* [WebApi](#webapi)
+* [WebApp](#webapp)
+* [DockerCompose](#dockercompose)
 
-## Producer {#producer}
+## Producer
 
 O Producer constrói uma mensagem para ser enviado a determinado tópico do Kafka.
 
@@ -21,7 +21,7 @@ a mensagem se perca.
 O producer não possui referência a nenhum outro projeto, sendo utilizado apenas
 como serviço pela WebApi.
 
-## Consumers {#consumers}
+## Consumers
 
 Todos os consumers possuem o objetivo de direcionar as mensagens para o
 destinatário correto, por exemplo, uma mensagem que almeja enviar foto de um
@@ -39,12 +39,12 @@ Os consumers possuem uma segurança extra para se manterem em loop sempre
 recebendo mensagens e garantir que caso uma mensagem não seja enviada, ela
 poderá ser consumida novamente para tentar uma nova entrega.
 
-## Domain {#domain}
+## Domain
 
 Nesta solução, o Domain possui apenas as entidades e Dtos. Sem referência
 a nenhum outro projeto.
 
-## Infrastructure {#infrastructure}
+## Infrastructure
 
 O Infrastructure possui como referência o Domain, e serve como uma interface
 para acesso ao banco de dados principal, incluindo serviços de segurança como
@@ -53,7 +53,7 @@ Identity para criação e utilização das contas de usuários, mapeamentos entre
 Dto e entidades e o próprio repositório para manipulação do banco de dados.
 
 
-## WebApi {#webapi}
+## WebApi
 
 A WebApi possui referência direta ao Infrastructure e ao Producer, utilizando
 os serviços disponíveis conforme necessário através de injeção de dependência.
@@ -62,7 +62,7 @@ os serviços disponíveis conforme necessário através de injeção de dependência.
 Producer, através de endpoints protegidos para serem acessados apenas
 por requisição http pela aplicação Web.
 
-## WebApp {#webapp}
+## WebApp
 
 A AplicaçãoWeb não possui referência com nenhum outro projeto e apenas faz requisições
 diretamente para a WebApi, consumindo tokens através de sessões para conseguir
@@ -72,7 +72,7 @@ enviar fotos e se cadastrar para receber fotos pelos tópicos disponíveis.
 É a única parte de toda a solução que fica exposta ao usuário e lida com todas
 a interações deste com os demais serviços.
 
-## DockerCompose {#dockercompose}
+## DockerCompose
 
 Todos os projetos são orquestrados por um único docker-compose e um Dockerfile
 para cada (exceto pelo Domain e Infrastructure).
