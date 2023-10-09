@@ -1,12 +1,21 @@
 ﻿namespace WebApp.Controllers
 {
     using Microsoft.AspNetCore.Mvc;
+    using Newtonsoft.Json;
     using System.IO;
+    using System.Text;
     using WebApp.Models;
 
     public class ImageController : Controller
     {
-        private readonly string[] allowedExtensions = { ".jpg", ".jpeg", ".png", ".gif" };
+        private readonly string[] allowedExtensions;
+        private readonly string producerBaseUrl;
+
+        public ImageController()
+        {
+            allowedExtensions = new string[] { ".jpg", ".jpeg", ".png", ".gif" };
+            producerBaseUrl = "http://webapi:80/api/Producer/";
+        }
 
         [HttpGet]
         public IActionResult Index()
@@ -27,14 +36,12 @@
             {
                 return BadRequest("Nenhuma imagem enviada.");
             }
-
             if (file.Length > 5000000)
             {
                 throw new BadHttpRequestException("A imagem não pode ser maior que 5MB.", 413);
             }
 
             string fileExtension = Path.GetExtension(file.FileName).ToLower();
-
             if (!allowedExtensions.Contains(fileExtension))
             {
                 return StatusCode(415, "Tipo de mídia não suportado. Apenas imagens com as seguintes extensões são permitidas: " + string.Join(", ", allowedExtensions));
@@ -48,10 +55,24 @@
             }
             ImageViewModel imageViewModel = new ImageViewModel
             {
+                ImageData = fileData,
                 Topics = topics,
-                ImageData = fileData
+                FileName = SetRandomName(file.FileName),
+                UserId = String.Empty,
+                MimeType = String.Empty
             };
-            return Ok(imageViewModel);
+            string jsonImageViewModel = JsonConvert.SerializeObject(imageViewModel);
+            using (var httpClient = new HttpClient())
+            {
+                var content = new StringContent(jsonImageViewModel, Encoding.UTF8, "application/json");
+                HttpResponseMessage response = await httpClient.PostAsync(producerBaseUrl + "cat", content);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    return Ok("Image sent");
+                }
+            }
+            return BadRequest();
         }
 
 		[HttpGet]
