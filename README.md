@@ -15,4 +15,4 @@ docker-compose up --build
 ```
 - Acessar http://localhost:80
 
-
+[Mais informações](https://github.com/rodrigo-br/FabricaDeSpam/tree/main/src#readme)
