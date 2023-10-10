@@ -25,13 +25,14 @@
         }
 
         [HttpPost]
-        [Route("cat")]
+        [Route("send")]
         public async Task<IActionResult> UploadFile([FromBody]ImageDTO imageDTO)
         {
             foreach (var topic in imageDTO.Topics)
             {
-                bool success = await _kafkaProducer.ProduceMessageAsync("cat", imageDTO.FileName, imageDTO.ImageData);
+                bool success = await _kafkaProducer.ProduceMessageAsync(topic, imageDTO.FileName, imageDTO.ImageData);
                 Console.WriteLine(imageDTO.FileName);
+                Console.WriteLine(topic);
                 if (!success)
                 {
                     return StatusCode(500, "Ocorreu algum erro no envio da mensagem");

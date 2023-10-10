@@ -10,6 +10,7 @@
         {
             string directory = Path.Combine(Directory.GetCurrentDirectory(), "files");
             double timespan = 10;
+            List<string> topics = new List<string>() { "cat_mobile", "cat_email", "dog_mobile", "dog_email" };
 
             var retryPolicy = Policy
                 .Handle<Exception>()
@@ -32,7 +33,7 @@
 
                 using (var consumer = new ConsumerBuilder<string, byte[]>(config).Build())
                 {
-                    consumer.Subscribe("cat");
+                consumer.Subscribe(topics);
 
                     var cancellationTokenSource = new CancellationTokenSource();
 

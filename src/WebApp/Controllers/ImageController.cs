@@ -65,7 +65,7 @@
             using (var httpClient = new HttpClient())
             {
                 var content = new StringContent(jsonImageViewModel, Encoding.UTF8, "application/json");
-                HttpResponseMessage response = await httpClient.PostAsync(producerBaseUrl + "cat", content);
+                HttpResponseMessage response = await httpClient.PostAsync(producerBaseUrl + "send", content);
 
                 if (response.IsSuccessStatusCode)
                 {
