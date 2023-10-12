@@ -25,8 +25,6 @@
 			services.AddAuthentication(options =>
 			{
 				options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-				options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-				options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
 			})
 				.AddJwtBearer(options =>
 				{
@@ -34,11 +32,13 @@
 					options.RequireHttpsMetadata = false;
 					options.TokenValidationParameters = new TokenValidationParameters()
 					{
-						ValidateIssuer = true,
-						ValidateAudience = true,
-						ValidAudience = Env.GetString("JWT_VALID_AUDIENCE"),
-						ValidIssuer = Env.GetString("JWT_VALID_ISSUER"),
-						IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Env.GetString("JWT_SECRET")))
+						RequireExpirationTime = true,
+						IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Env.GetString("JWT_SECRET"))),
+						ValidateIssuerSigningKey = true,
+						ValidateAudience = false,
+						ValidateIssuer = false,
+						ValidateLifetime = true,
+						ClockSkew = TimeSpan.Zero
 					};
 				});
 		}

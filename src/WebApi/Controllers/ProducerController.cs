@@ -1,6 +1,8 @@
 ﻿namespace WebApi.Controllers
 {
+    using AutoMapper;
     using Domain.DTO;
+    using Domain.Entities;
     using Infrastructure.Repositories;
     using Microsoft.AspNetCore.Mvc;
     using Producer.Interface;
@@ -36,6 +38,7 @@
                     return StatusCode(500, "Ocorreu algum erro no envio da mensagem");
                 }
             }
+            await _imageRepository.Add(imageDTO);
             return Ok("Tudo certo por aqui ;D");
         }
     }

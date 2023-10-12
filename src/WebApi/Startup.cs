@@ -48,9 +48,10 @@
             services.AddScoped<IUserService, UserService>();
 
             services.AddCors(options =>
-                options.AddPolicy("NaoSeiOQueColocarAquiAinda", builder =>
+                options.AddPolicy("AllowAnyOrigin", builder =>
                     builder.AllowAnyOrigin().
-                    AllowAnyHeader())
+                    AllowAnyHeader().
+                    AllowAnyMethod())
             );
 
 
@@ -69,12 +70,12 @@
             app.UseSwaggerUI();
 
             //app.UseHttpsRedirection();
+            app.UseAuthentication();
             app.UseRouting();
-
             app.UseAuthorization();
-            // app.UseAuthentication();
 
-            app.UseCors("NaoSeiOQueColocarAquiAinda");
+
+            app.UseCors("AllowAnyOrigin");
 
             app.UseEndpoints(endpoints =>
             {

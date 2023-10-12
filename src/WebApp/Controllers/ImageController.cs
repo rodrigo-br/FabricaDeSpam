@@ -6,6 +6,7 @@
     using System.Text;
     using WebApp.Models;
     using Microsoft.AspNetCore.StaticFiles;
+    using Microsoft.AspNetCore.Http.HttpResults;
 
     public class ImageController : Controller
     {
@@ -74,12 +75,17 @@
                     return BadRequest("Necessary login first");
                 }
 
-                httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+                httpClient.DefaultRequestHeaders.Add("Authorization", "Bearer " + token);
                 HttpResponseMessage idResponse = await httpClient.GetAsync(userBaseUrl + "IdClaimer");
                 if (idResponse.IsSuccessStatusCode)
                 {
                     imageViewModel.UserId = await idResponse.Content.ReadAsStringAsync();
                 }
+                else
+                {
+                    return Unauthorized("Unauthorized");
+                }
+                Console.WriteLine($"User id: {imageViewModel.UserId}");
                 string jsonImageViewModel = JsonConvert.SerializeObject(imageViewModel);
                 var content = new StringContent(jsonImageViewModel, Encoding.UTF8, "application/json");
                 HttpResponseMessage response = await httpClient.PostAsync(producerBaseUrl + "send", content);
