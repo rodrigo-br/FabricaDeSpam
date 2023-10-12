@@ -31,8 +31,6 @@
             foreach (var topic in imageDTO.Topics)
             {
                 bool success = await _kafkaProducer.ProduceMessageAsync(topic, imageDTO.FileName, imageDTO.ImageData);
-                Console.WriteLine(imageDTO.FileName);
-                Console.WriteLine(topic);
                 if (!success)
                 {
                     return StatusCode(500, "Ocorreu algum erro no envio da mensagem");

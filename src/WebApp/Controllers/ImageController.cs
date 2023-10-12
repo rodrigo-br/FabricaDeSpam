@@ -5,16 +5,19 @@
     using System.IO;
     using System.Text;
     using WebApp.Models;
+    using Microsoft.AspNetCore.StaticFiles;
 
     public class ImageController : Controller
     {
         private readonly string[] allowedExtensions;
         private readonly string producerBaseUrl;
+        private readonly string userBaseUrl;
 
         public ImageController()
         {
             allowedExtensions = new string[] { ".jpg", ".jpeg", ".png", ".gif" };
             producerBaseUrl = "http://webapi:80/api/Producer/";
+            userBaseUrl = "http://webapi:80/api/User/";
         }
 
         [HttpGet]
@@ -58,12 +61,26 @@
                 ImageData = fileData,
                 Topics = topics,
                 FileName = SetRandomName(file.FileName),
-                UserId = String.Empty,
-                MimeType = String.Empty
+                UserId = String.Empty
             };
-            string jsonImageViewModel = JsonConvert.SerializeObject(imageViewModel);
+            var provider = new FileExtensionContentTypeProvider();
+            provider.TryGetContentType(fileExtension, out var contentType);
+            imageViewModel.MimeType = contentType ?? String.Empty;
             using (var httpClient = new HttpClient())
             {
+                string? token = HttpContext.Session.GetString("AuthToken");
+                if (token == null)
+                {
+                    return BadRequest("Necessary login first");
+                }
+
+                httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+                HttpResponseMessage idResponse = await httpClient.GetAsync(userBaseUrl + "IdClaimer");
+                if (idResponse.IsSuccessStatusCode)
+                {
+                    imageViewModel.UserId = await idResponse.Content.ReadAsStringAsync();
+                }
+                string jsonImageViewModel = JsonConvert.SerializeObject(imageViewModel);
                 var content = new StringContent(jsonImageViewModel, Encoding.UTF8, "application/json");
                 HttpResponseMessage response = await httpClient.PostAsync(producerBaseUrl + "send", content);
 
