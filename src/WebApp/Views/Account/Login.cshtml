@@ -1,31 +1,44 @@
 ﻿@model WebApp.Models.LoginViewModel;
+
 @{
 	ViewData["Title"] = "Login";
+    Layout = "/Views/Layouts/Login_Layout.cshtml";
 }
 
-<div class="container mx-auto">
-	<div class="row justify-content-center">
-		<div class="col-12 col-lg-6">
-			<h1 class="mt-3 mb-3 h3">
-				Login
-			</h1>
-			<form method="post">
-				<div class="mb-3">
-					<label class="form-label">Username</label>
-					<input type="text" id="username" class="form-control" asp-for="Username" />
-				</div>
 
-				<div class="mb-3">
-					<label class="form-label">Password</label>
-					<input type="password" id="password" class="form-control" asp-for="Password" />
-				</div>
-
-				<div class="mb-3">
-					<button type="submit" class="btn btn-dark">Login</button>
-				</div>
-
-				<input type="hidden" asp-for="ReturnUrl" />
-			</form>
+<div class="wrap-login100 p-l-55 p-r-55 p-t-65 p-b-54">
+	<form class="login100-form validate-form" method="post">
+		<span class="login100-form-title p-b-49">
+			Login
+		</span>
+		<div class="wrap-input100 validate-input m-b-23" data-validate="Username is reauired">
+			<span class="label-input100">Username</span>
+			<input class="input100" type="email" name="username" placeholder="Type your e-mail" id="username" class="form-control" asp-for="Username">
+			@* <span class="focus-input100" data-symbol=""></span> *@
 		</div>
-	</div>
+		<div class="wrap-input100 validate-input" data-validate="Password is required">
+			<span class="label-input100">Password</span>
+			<input class="input100" type="password" name="pass" placeholder="Type your password" id="password" class="form-control" asp-for="Password">
+			@* <span class="focus-input100" data-symbol=""></span> *@
+		</div>
+		<div class="text-right p-t-8 p-b-31">
+			<a href="#">
+				Forgot password?
+			</a>
+		</div>
+		<div class="container-login100-form-btn">
+			<div class="wrap-login100-form-btn">
+				<div class="login100-form-bgbtn"></div>
+				<button class="login100-form-btn">
+					Login
+				</button>
+			</div>
+		</div>
+		<div class="flex-col-c p-t-50">
+			<span class="txt1 p-b-17">
+				Sign Up Using
+			</span>
+			<a class="txt2" asp-area="" asp-controller="Account" asp-action="Register">Sign Up</a>
+		</div>
+	</form>
 </div>
