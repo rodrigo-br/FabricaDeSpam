@@ -6,19 +6,21 @@
     using System.Text;
     using WebApp.Models;
     using Microsoft.AspNetCore.StaticFiles;
-    using Microsoft.AspNetCore.Http.HttpResults;
+    using System.Text.Json;
 
     public class ImageController : Controller
     {
         private readonly string[] allowedExtensions;
         private readonly string producerBaseUrl;
         private readonly string userBaseUrl;
+        private readonly string imageBaseUrl;
 
         public ImageController()
         {
             allowedExtensions = new string[] { ".jpg", ".jpeg", ".png", ".gif" };
             producerBaseUrl = "http://webapi:80/api/Producer/";
             userBaseUrl = "http://webapi:80/api/User/";
+            imageBaseUrl = "http://webapi:80/api/Image/";
         }
 
         [HttpGet]
@@ -103,6 +105,22 @@
 		{
             return View();
 		}
+
+        [HttpGet]
+        public async Task<IActionResult> ImageCollection()
+        {
+			using (var httpClient = new HttpClient())
+			{
+				HttpResponseMessage response = await httpClient.GetAsync(imageBaseUrl + "AllImages");
+				if (response.IsSuccessStatusCode)
+				{
+					var content = await response.Content.ReadAsStringAsync();
+                    var images = JsonConvert.DeserializeObject<List<ImageViewModel>>(content);
+					return View(images);
+				}
+			}
+			throw new Exception();
+        }
 
         private static string SetRandomName(string originalName)
         {

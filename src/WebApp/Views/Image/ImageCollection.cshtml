@@ -1,0 +1,17 @@
+﻿@model List<ImageViewModel>
+@{
+}
+
+<h1>Images Collection</h1>
+
+<div class="row">
+	@if (Model != null && Model.Any())
+	{
+		foreach (var image in Model)
+		{
+			<div class="col-md-3 mb-3">
+				<img class="img-fluid" src="data:@image.MimeType;base64,@Convert.ToBase64String(image.ImageData)" alt="@image.FileName" />
+			</div>
+		}
+	}
+</div>
