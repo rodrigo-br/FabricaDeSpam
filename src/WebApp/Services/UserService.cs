@@ -1,5 +1,4 @@
 ﻿using Newtonsoft.Json;
-using System.Net.Http;
 using System.Text;
 using WebApp.Models;
 using WebApp.Services.Interfaces;
