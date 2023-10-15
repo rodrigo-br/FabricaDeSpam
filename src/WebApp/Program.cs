@@ -1,3 +1,6 @@
+using WebApp.Services;
+using WebApp.Services.Interfaces;
+
 namespace WebApp
 {
     public class Program
@@ -9,6 +12,8 @@ namespace WebApp
             // Add services to the container.
             builder.Services.AddControllersWithViews();
             builder.Services.AddSession();
+
+            builder.Services.AddTransient<IUserService, UserService>();
 
             var app = builder.Build();
 

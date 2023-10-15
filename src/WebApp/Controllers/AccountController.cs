@@ -1,18 +1,19 @@
 ﻿namespace WebApp.Controllers
 {
-	using Microsoft.AspNetCore.Mvc;
-	using Newtonsoft.Json;
+    using Microsoft.AspNetCore.Mvc;
+    using Newtonsoft.Json;
 	using System.Text;
 	using WebApp.Models;
+    using WebApp.Services.Interfaces;
 
-	public class AccountController : Controller
+    public class AccountController : Controller
 	{
-        private readonly string baseUrl;
+        private readonly IUserService _userService;
 
-		public AccountController()
+        public AccountController(IUserService userService)
         {
-            baseUrl = "http://webapi:80/api/Account/";
-		}
+            _userService = userService;
+        }
 
         [HttpGet]
         public IActionResult Index()
@@ -29,17 +30,10 @@
         [HttpPost]
         public async Task<IActionResult> Register(RegisterViewModel registerViewModel)
         {
-            string jsonRegisterViewModel = JsonConvert.SerializeObject(registerViewModel);
-
-            using (var httpClient =  new HttpClient())
+            bool registerSucess = await _userService.Register(registerViewModel);
+            if (registerSucess)
             {
-                var content = new StringContent(jsonRegisterViewModel, Encoding.UTF8, "application/json");
-                HttpResponseMessage response = await httpClient.PostAsync(baseUrl + "Register", content);
-
-                if (response.IsSuccessStatusCode)
-                {
-					return Ok("Account created");
-				}
+                return RedirectToAction("Index", "Home");
             }
             return BadRequest();
         }
@@ -57,26 +51,19 @@
         [HttpPost]
         public async Task<IActionResult> Login(LoginViewModel loginViewModel)
         {
-			string jsonRegisterViewModel = JsonConvert.SerializeObject(loginViewModel);
+            var token = await _userService.Login(loginViewModel);
 
-			using (var httpClient = new HttpClient())
-			{
-				var content = new StringContent(jsonRegisterViewModel, Encoding.UTF8, "application/json");
-				HttpResponseMessage response = await httpClient.PostAsync(baseUrl + "Login", content);
+            if (token == null)
+            {
+                return BadRequest();
+            }
 
-				if (response.IsSuccessStatusCode)
-				{
-                    string token = await response.Content.ReadAsStringAsync();
-                    HttpContext.Session.SetString("AuthToken", token);
-                    Console.WriteLine(token);
-                    if (!string.IsNullOrWhiteSpace(loginViewModel.ReturnUrl))
-                    {
-                        return Redirect(loginViewModel.ReturnUrl);
-                    }
-                    return RedirectToAction("Index", "Home");
-				}
-			}
-			return BadRequest();
+            HttpContext.Session.SetString("AuthToken", token);
+            if (!string.IsNullOrWhiteSpace(loginViewModel.ReturnUrl))
+            {
+                return Redirect(loginViewModel.ReturnUrl);
+            }
+            return RedirectToAction("Index", "Home");
 		}
     }
 }

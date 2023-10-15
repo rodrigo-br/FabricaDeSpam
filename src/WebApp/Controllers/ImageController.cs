@@ -7,20 +7,22 @@
     using WebApp.Models;
     using Microsoft.AspNetCore.StaticFiles;
     using System.Text.Json;
+    using WebApp.Services.Interfaces;
 
     public class ImageController : Controller
     {
         private readonly string[] allowedExtensions;
         private readonly string producerBaseUrl;
-        private readonly string userBaseUrl;
         private readonly string imageBaseUrl;
+        private readonly IUserService _userService;
 
-        public ImageController()
+        public ImageController(IUserService userService)
         {
+
             allowedExtensions = new string[] { ".jpg", ".jpeg", ".png", ".gif" };
             producerBaseUrl = "http://webapi:80/api/Producer/";
-            userBaseUrl = "http://webapi:80/api/User/";
             imageBaseUrl = "http://webapi:80/api/Image/";
+            _userService = userService;
         }
 
         [HttpGet]
@@ -69,29 +71,24 @@
             var provider = new FileExtensionContentTypeProvider();
             provider.TryGetContentType(fileExtension, out var contentType);
             imageViewModel.MimeType = contentType ?? String.Empty;
+
+            HttpResponseMessage? idResponse = await _userService
+                .GetUserId(HttpContext.Session.GetString("AuthToken"));
+            if (idResponse != null)
+            {
+                imageViewModel.UserId = await idResponse.Content.ReadAsStringAsync();
+            }
+            else
+            {
+                var _returnUrl = Url.Action("Sender", "Image");
+                return RedirectToAction("Login", "Account", new { returnUrl = _returnUrl});
+            }
+
             using (var httpClient = new HttpClient())
             {
-                string? token = HttpContext.Session.GetString("AuthToken");
-                if (token == null)
-                {
-                    return BadRequest("Necessary login first");
-                }
-
-                httpClient.DefaultRequestHeaders.Add("Authorization", "Bearer " + token);
-                HttpResponseMessage idResponse = await httpClient.GetAsync(userBaseUrl + "IdClaimer");
-                if (idResponse.IsSuccessStatusCode)
-                {
-                    imageViewModel.UserId = await idResponse.Content.ReadAsStringAsync();
-                }
-                else
-                {
-                    return Unauthorized("Unauthorized");
-                }
-                Console.WriteLine($"User id: {imageViewModel.UserId}");
                 string jsonImageViewModel = JsonConvert.SerializeObject(imageViewModel);
                 var content = new StringContent(jsonImageViewModel, Encoding.UTF8, "application/json");
                 HttpResponseMessage response = await httpClient.PostAsync(producerBaseUrl + "send", content);
-
                 if (response.IsSuccessStatusCode)
                 {
                     return Ok("Image sent");
@@ -116,7 +113,11 @@
 				{
 					var content = await response.Content.ReadAsStringAsync();
                     var images = JsonConvert.DeserializeObject<List<ImageViewModel>>(content);
-					return View(images);
+                    if (images != null)
+                    {
+                        images.Reverse();
+					    return View(images);
+                    }
 				}
 			}
 			throw new Exception();
