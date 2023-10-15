@@ -8,6 +8,7 @@
     using Microsoft.AspNetCore.StaticFiles;
     using System.Text.Json;
     using WebApp.Services.Interfaces;
+    using WebApp.Services;
 
     public class ImageController : Controller
     {
@@ -34,6 +35,10 @@
         [HttpGet]
         public IActionResult Sender()
         {
+            if (AuthenticationUtility.IsAuthenticated(HttpContext) == null)
+            {
+                return RedirectToAction("Login", "Account");
+            }
             return View();
         }
 
@@ -100,6 +105,10 @@
 		[HttpGet]
 		public IActionResult Receiver()
 		{
+            if (AuthenticationUtility.IsAuthenticated(HttpContext) == null)
+            {
+                return RedirectToAction("Login", "Account");
+            }
             return View();
 		}
 
