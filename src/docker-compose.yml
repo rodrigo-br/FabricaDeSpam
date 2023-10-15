@@ -76,6 +76,8 @@ services:
     restart: always
 
   webapp:
+     env_file:
+        - ../.env
      build:
        context: ./
        dockerfile: WebApp.Dockerfile

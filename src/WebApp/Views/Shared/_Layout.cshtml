@@ -1,4 +1,6 @@
-﻿<!DOCTYPE html>
+﻿@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor;
+@using WebApp.Services;
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -24,10 +26,20 @@
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Index">Account</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Image" asp-action="Index">Images</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Image" asp-action="Index">Images</a>
+                            @{
+                                var userName = AuthenticationUtility.IsAuthenticated(HttpContextAccessor.HttpContext);
+                                if (userName != null)
+                                {
+                                     <a class="nav-link text-dark">@userName</a>
+                                }
+                                else
+                                {
+                                     <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Index">Account</a>
+                                }
+                            }
                         </li>
                     </ul>
                 </div>

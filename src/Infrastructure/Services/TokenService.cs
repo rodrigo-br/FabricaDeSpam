@@ -27,7 +27,7 @@ namespace Infrastructure.Services
                 key, SecurityAlgorithms.HmacSha256);
 
             var token = new JwtSecurityToken(
-                    expires: DateTime.Now.AddMinutes(1),
+                    expires: DateTime.Now.AddMinutes(Env.GetInt("JWT_EXPIRE_TIME")),
                     claims: claims,
                     signingCredentials: signingCredentials
                 );
