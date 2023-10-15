@@ -5,6 +5,7 @@
     using WebApp.Services.Interfaces;
     using DotNetEnv;
     using Microsoft.AspNetCore.Http;
+    using WebApp.Services;
 
     public class AccountController : Controller
 	{
@@ -18,12 +19,20 @@
         [HttpGet]
         public IActionResult Index()
         {
+            if (AuthenticationUtility.IsAuthenticated(HttpContext) != null)
+            {
+                return RedirectToAction("Index", "Home");
+            }
             return View();
         }
 
         [HttpGet]
         public IActionResult Register()
         {
+            if (AuthenticationUtility.IsAuthenticated(HttpContext) != null)
+            {
+                return RedirectToAction("Index", "Home");
+            }
             return View();
         }
 
@@ -41,6 +50,10 @@
         [HttpGet]
         public IActionResult Login(string returnUrl)
         {
+            if (AuthenticationUtility.IsAuthenticated(HttpContext) != null)
+            {
+                return RedirectToAction("Index", "Home");
+            }
             var model = new LoginViewModel
             {
                 ReturnUrl = returnUrl
