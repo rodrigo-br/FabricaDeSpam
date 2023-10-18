@@ -1,3 +1,56 @@
 ﻿@{
     ViewData["Title"] = "Receiver";
 }
+
+<div class="container mx-auto">
+    <div class="row justify-content-center">
+        <div class="col-12 col-lg-6">
+            <h1 class="mt-3 mb-3 h3">
+                Receive Image
+            </h1>
+            <form method="post" enctype="multipart/form-data">
+                <div class="mb-3">
+                    <label class="form-label">Topics</label>
+                    <div>
+                        <label class="form-check-label">
+                            <input type="checkbox" class="form-check-input catCheckbox" name="topics" value="cat_mobile"> Cat Mobile
+                        </label>
+                    </div>
+                    <div class="mb-2">
+                        <label class="form-check-label">
+                            <input type="checkbox" class="form-check-input catCheckbox" name="topics" value="cat_email"> Cat Email
+                        </label>
+                    </div>
+                    <div>
+                        <label class="form-check-label">
+                            <input type="checkbox" class="form-check-input dogCheckbox" name="topics" value="dog_mobile"> Dog Mobile
+                        </label>
+                    </div>
+                    <div>
+                        <label class="form-check-label">
+                            <input type="checkbox" class="form-check-input dogCheckbox" name="topics" value="dog_email"> Dog Email
+                        </label>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <button type="submit" class="btn btn-dark">Register</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+            $("form").submit(function (event) {
+                var catChecked = $("input.catCheckbox:checked").length > 0;
+                var dogChecked = $("input.dogCheckbox:checked").length > 0;
+
+                if (!catChecked && !dogChecked) {
+                    alert("Select at least one topic option (Cat ou Dog)");
+                    event.preventDefault(); // Impede o envio do formulário
+                }
+            });
+        });
+</script>

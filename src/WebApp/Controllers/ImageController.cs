@@ -112,6 +112,16 @@
             return View();
 		}
 
+        [HttpPost]
+        public IActionResult Receiver(List<string> topics)
+        {
+            foreach (var topic in topics)
+            {
+                Console.WriteLine(topic);
+            }
+            return RedirectToAction("Index", "Home");
+        }
+
         [HttpGet]
         public async Task<IActionResult> ImageCollection()
         {

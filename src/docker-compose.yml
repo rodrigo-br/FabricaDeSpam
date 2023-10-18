@@ -94,9 +94,9 @@ services:
       - ../.env
     volumes:
       - ./dbdata:/var/lib/postgresql/data
-      - type: bind
-        source: ./config/dump.sql
-        target: /docker-entrypoint-initdb.d/dump.sql
+      #- type: bind
+      #  source: ./config/dump.sql
+      #  target: /docker-entrypoint-initdb.d/dump.sql
     networks:
       - cavalinho
     ports:

@@ -12,7 +12,6 @@
         [Route("IdClaimer")]
         public IActionResult GetUserId()
         {
-            Console.WriteLine("CHEGOU AQUI");
             var userIdClaim = User.FindFirst("id");
 
             if (userIdClaim == null)
@@ -22,6 +21,14 @@
             Console.WriteLine(userIdClaim);
             Console.WriteLine(userIdClaim.Value);
             return Ok(userIdClaim.Value);
+        }
+
+        [HttpPut]
+        [Route("TopicRegister")]
+        public IActionResult RegisterToTopics()
+        {
+            var userId = User.FindFirst("id");
+            return Ok(userId);
         }
     }
 }

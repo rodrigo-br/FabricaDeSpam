@@ -8,14 +8,35 @@
 	using Microsoft.AspNetCore.Authentication.JwtBearer;
 	using Microsoft.IdentityModel.Tokens;
 	using System.Text;
+    using Microsoft.AspNetCore.Hosting;
+    using Microsoft.EntityFrameworkCore;
+    using Microsoft.Extensions.Hosting;
 
-	public static class SecurityService
+    public static class SecurityService
 	{
 		public static void AddAppIdentity(this IServiceCollection services)
 		{
 			services.AddIdentity<User, IdentityRole>()
 				.AddEntityFrameworkStores<ApplicationDbContext>()
 				.AddDefaultTokenProviders();
+		}
+
+		public static IHost MigrateDatabase<T>(this IHost webHost) where T : DbContext
+		{
+			using (var scope = webHost.Services.CreateScope())
+			{
+				var services = scope.ServiceProvider;
+				try
+				{
+					var db = services.GetRequiredService<T>();
+					db.Database.Migrate();
+				}
+				catch (Exception ex)
+				{
+					Console.WriteLine($"An error occurred while migrating the database: {ex.ToString()}");
+				}
+			}
+			return webHost;
 		}
 
 		public static void AddAppAuthentication(this IServiceCollection services)

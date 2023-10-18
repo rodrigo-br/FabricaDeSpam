@@ -16,14 +16,6 @@
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
-
-            builder.Entity<Image>()
-                .HasKey(e => e.Id);
-
-            builder.Entity<Image>()
-                .HasOne(e => e.User)
-                .WithMany(u => u.Images)
-                .HasForeignKey(e => e.UserId);
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
